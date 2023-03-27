@@ -1,0 +1,29 @@
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import ProductionOrderCreateAfterLoginCheck from "./sections/ProductionOrderCreateAfterLoginCheck";
+import Loading from "../Common/Loading";
+
+const ProductionOrderCreate = () => {
+
+  const navigate = useNavigate(); 
+
+  const [selectedDIV_state, setSelectedDIV_state] = useState(<Loading/>);
+
+  useEffect(() => {
+    if(window.localStorage.getItem('loggedInUsername') != null) {
+      setSelectedDIV_state(<ProductionOrderCreateAfterLoginCheck/>);
+    }
+    else {
+        navigate("/");
+    }
+  }, []);
+
+  return (
+    <>
+      {selectedDIV_state}
+    </>
+  );
+};
+
+export default ProductionOrderCreate;

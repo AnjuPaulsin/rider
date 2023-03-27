@@ -1,0 +1,192 @@
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { Link, useParams } from "react-router-dom";
+
+
+const  ProductionOrderPropertyEdit= () => {
+ 
+    const [id, setId] = useState(0);
+    const [genericname,setGenericname]= useState("");
+    const [composition,setComposition]= useState("");
+    const [usage,setUsage]= useState("");
+    const [remark,setRemark]= useState("");
+    const [productimage,setProductImage]= useState("");
+   const [scheduled ,setScheduled ] = useState("2017-5-2");
+    const [productionOrderEditID, setProductionOrderEditID] = useState();
+
+
+
+    const navigate = useNavigate();
+    const {operation}=useParams();
+    const {uniqueID}=useParams();
+    var loggedInUsername=window.localStorage.getItem('loggedInUsername')
+    var loggedInUserrole=window.localStorage.getItem('loggedInUserrole')
+
+    function getProductOrderPropertyEditRequestData() {
+        //var productionOrderEditID = window.localStorage.getItem("productionOrderEditID");
+        //alert(uniqueID);
+    
+        axios
+        .get("http://127.0.0.1:8000/master/poproperty/"+uniqueID,
+          
+        )
+        .then((res2) => {
+          // alert("anu")
+          //alert(res.data[0].system_name);
+          //setProductionLineSystemName(res.data[0].system_name);
+    
+          // alert(res2.data[0].generic_name);
+          //alert(res2.data[0].scheduled);
+          // if(res2.data[0].scheduled == null) {
+          //   setScheduled("2011-11-11");
+          // }
+          // else {
+            setScheduled(res2.data[0].scheduled); 
+          // }
+          setGenericname(res2.data[0].generic_name);
+          setComposition(res2.data[0].composition);
+          setUsage(res2.data[0].usage);
+          setRemark(res2.data[0].remark);
+        });
+      }
+      useEffect(() => {
+        
+        getProductOrderPropertyEditRequestData();       
+      }, []);
+
+      var genericnameWidget =<input
+      type="text"
+      className="form-control"
+      value={genericname}
+      onChange={(e) => setGenericname(e.target.value)}
+    />    
+     var compositionWidget =<input
+      type="text"
+      value={composition}
+      className="form-control"
+      onChange={(e) => setComposition(e.target.value)}
+    />
+    var scheduledWidget =<input
+    type="date"
+    value={scheduled}
+    className="form-control"
+    onChange={(e) => setScheduled(e.target.value)}
+    />
+    var usageWidget =<input
+      type="text"
+      value={usage}
+      className="form-control"
+      onChange={(e) => setUsage(e.target.value)}
+  />
+  var remarkWidget = <input
+      type="text"
+      value={remark}
+      className="form-control"
+      onChange={(e) => setRemark(e.target.value)}
+    />
+  var productimageWidget =  <input
+      type="text"
+      value={productimage}
+      className="form-control"
+      onChange={(e) => setProductImage(e.target.value)}
+    />
+    const handleSubmit=(e)=>
+    {
+        e.preventDefault();
+        if(scheduled == "Invalid date") {
+            setScheduled("2017-06-01");
+          }
+        axios
+        .put(`http://127.0.0.1:8000/master/poproperty/update/`+uniqueID,
+        {
+            "generic_name":genericname, 
+            "composition":composition, 
+            "scheduled":scheduled,
+            "usage": usage, 
+            "remark":remark,
+            "product_image": productimage, 
+          
+            "loggedInUsername":loggedInUsername,
+            "loggedInUserrole":loggedInUserrole
+        })
+        .then(()=>{
+            navigate("/productionorder");
+        });
+    }
+
+    return (
+        <>
+            <div class="container-fluid">
+                <div class="card shadow mb-4"> 
+                    <div class="card-header py-3">
+                    <div className='row'>
+                        <div className='col-10'>
+                            <h5 class="m-0 font-weight-bold text-primary">Add Productionorder Properties</h5>
+                        </div>
+                    </div>                                  
+                    </div>
+        
+                    <div class="card-body">  
+                        <table class="table table-borderless productionOrderReportSearchTable" id="productionOrderReportSearchTableID">
+                            <tbody>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">Generic Name</td>
+                                        <td class="productionOrderReportSearchTD">
+                                        {genericnameWidget}
+                                        </td>
+                                </tr>
+                                <tr>
+                                <td class="productionOrderReportSearchTD">Composition</td>
+                                <td class="productionOrderReportSearchTD">
+                                    {compositionWidget}
+                                </td>
+                                </tr>
+                                <tr>
+
+                                <td class="productionOrderReportSearchTD">Scheduled</td>
+                                <td class="productionOrderReportSearchTD">
+                                    {scheduledWidget}
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">Usage</td>
+                                    <td class="productionOrderReportSearchTD">
+                                    {usageWidget}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">Remark</td>
+                                    <td class="productionOrderReportSearchTD">
+                                    {remarkWidget}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">Product Image</td>
+                                    <td class="productionOrderReportSearchTD">
+                                    {productimageWidget}
+                                    </td>
+                                </tr>
+                                <br></br>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit
+                                    </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default ProductionOrderPropertyEdit
+

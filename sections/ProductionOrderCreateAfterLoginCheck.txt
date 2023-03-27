@@ -1,0 +1,98 @@
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { Link, useParams } from "react-router-dom";
+// import Navbar from "../Navigation/Navbar";
+import Sidebar from "../../Common/Sidebar";
+import Header from "../../Common/Header";
+import Footer from "../../Common/Footer";
+import ProductionOrderDataEdit from "./ProductionOrderDataEdit";
+import ProductionOrderDataEntry from "./ProductionOrderDataEntry";
+import Loading from "../../Common/Loading";
+import NotAuthorizedSection from "../../Common/NotAuthorizedSection";
+const ProductionOrderCreateAfterLoginCheck = () => {
+
+  const { operation } = useParams();
+  const { uniqueID } = useParams();
+
+     
+
+  const [selectedDIV_state, setSelectedDIV_state] = useState(<Loading/>);
+
+
+
+function checkAuthorization() {
+  axios
+  .get("http://localhost:8000/accounts/userrolePermissionsRead")
+  .then((res) => {
+    var authorized = false;
+    // alert("haiii")
+    // alert(res.data.length)
+    // alert(res.data[0].admin['CREATE']);
+    res.data.forEach(element => {
+      if(element['activity_name'] === 'productionorder') {
+ 
+        if(window.localStorage.getItem('loggedInUserrole') === "admin") {
+          //alert(element.activity_name);
+          if(operation === "new") {
+         element.admin['CREATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEntry/>) : setSelectedDIV_state(<NotAuthorizedSection/>);
+          }
+          else if(operation === "edit") {
+         element.admin['UPDATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEdit/>) : setSelectedDIV_state(<NotAuthorizedSection/>);
+          }
+        }
+        else if(window.localStorage.getItem('loggedInUserrole') === "operator") {
+          if(operation === "new") {
+            element.operator['CREATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEntry/>) :setSelectedDIV_state(<NotAuthorizedSection/>);      
+          }
+          else if(operation === "edit") {
+          element.operator['UPDATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEdit/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+          }
+        }
+        else if(window.localStorage.getItem('loggedInUserrole') === "supervisor") {
+          if(operation === "new") {
+           element.supervisor['CREATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEntry/>) :setSelectedDIV_state(<NotAuthorizedSection/>);      
+          }
+          else if(operation === "edit") {
+           element.supervisor['UPDATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEdit/>) :setSelectedDIV_state(<NotAuthorizedSection/>);      
+          }
+        }
+        else if(window.localStorage.getItem('loggedInUserrole') === "masterdata") {
+          if(operation === "new") {
+             element.masterdata['CREATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEntry/>) :setSelectedDIV_state(<NotAuthorizedSection/>);      
+          }
+          else if(operation === "edit") {
+              element.masterdata['UPDATE']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataEdit/>) :setSelectedDIV_state(<NotAuthorizedSection/>);      
+          }
+        }
+      }
+    });
+
+  });
+}
+
+  useEffect(() => {
+    checkAuthorization();
+  }, []);
+
+  return (
+    <>
+
+      <div id="wrapper">
+        <Sidebar pageName = "productionorder"/>
+          <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+              <Header></Header>  
+              {selectedDIV_state}
+            </div>
+          <Footer></Footer>
+        </div>
+      </div>
+
+    </>
+  );
+};
+
+export default ProductionOrderCreateAfterLoginCheck;
+
+

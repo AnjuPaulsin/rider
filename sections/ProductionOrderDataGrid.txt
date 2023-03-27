@@ -1,0 +1,317 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router";
+import * as  MdIcons from "react-icons/md";
+import { DataGrid, GridToolbar, GridApi, GridCellValue, GridToolbarContainer, GridToolbarColumnsButton, 
+  GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarExport } from '@material-ui/data-grid';
+import axios from "axios";
+import * as  AiIcons from "react-icons/ai";
+const ProductionOrderDataGrid= (props) => {
+
+  const [selectedDIV_state, setSelectedDIV_state] = useState("");
+
+  const navigate = useNavigate();
+    
+  var loggedInUsername=window.localStorage.getItem('loggedInUsername')
+  var loggedInUserrole=window.localStorage.getItem('loggedInUserrole')
+ 
+  let userDataColumns = [
+    {field:'slno',headerName:'SlNo', flex:1, align:'left', headerAlign:'left'},
+    { field: 'id', headerName: 'Id', flex:1, align:'left', headerAlign:'left' },
+    { field: 'process_order_number', headerName: 'Process Order Number ', flex:1, align:'left', headerAlign:'left' },
+
+    { field: 'batch_number', headerName: 'Batch Number ', flex:1, align:'left', headerAlign:'left'},
+
+   { field: 'manufacturing_location', headerName: 'Manufacturing Location ', flex:1, align:'left', headerAlign:'left'},
+ 
+   { field: 'product_conn', headerName: 'Product Name', flex:1, align:'left', headerAlign:'left' },
+/*
+   { field: 'Production_line_id', headerName: 'Productionline id ', width: 170 },
+*/ 
+   { field: 'regulation', headerName: 'Regulation', flex:1, align:'left', headerAlign:'left' },
+   { field: 'production_date', headerName: 'Production Date', flex:1, align:'left', headerAlign:'left' },
+   { field: 'produced', headerName: 'produced', flex:1, align:'left', headerAlign:'left' },
+   { field: 'requested', headerName: 'requested', flex:1, align:'left', headerAlign:'left' },
+   { field: 'created_by', headerName: 'created by', flex:1, align:'left', headerAlign:'left'},
+   { field: 'status', headerName: 'Status',flex:1, align:'left', headerAlign:'left'},
+    {
+      field: 'edit',
+      headerName: 'Edit',
+      flex: 1,
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation(); // don't select this row after clicking
+  
+          const api: GridApi = params.api;
+          const thisRow: Record<string, GridCellValue> = {};
+  
+          api
+            .getAllColumns()
+            .filter((c) => c.field !== '__check__' && !!c)
+            .forEach(
+              (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
+            );
+          //alert(thisRow.name);
+          navigate("/productionorder/edit/"+thisRow.id);
+  
+          //return alert(JSON.stringify(thisRow, null, 4));
+        };
+  
+        //alert(currentUserrole);
+
+        if(props.editButtonStatus === "enabled") {
+          return <button
+            className="btn btn-dark" 
+            onClick={onClick}><MdIcons.MdCreate size={23}/></button>;
+        }
+        else if(props.editButtonStatus === "disabled") {
+          return <button
+            className="btn btn-dark" 
+            disabled = "true"
+            onClick={onClick}><MdIcons.MdCreate size={23}/></button>;
+        }
+      },
+    },
+    {
+      field: 'delete',
+      headerName: 'Delete',
+      flex : 1,
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation(); // don't select this row after clicking
+  
+          const api: GridApi = params.api;
+          const thisRow: Record<string, GridCellValue> = {};
+          api
+          .getAllColumns()
+          .filter((c)=>c.field!=='__check__'&&!!c)
+          .forEach(
+            (c)=>(thisRow[c.field]=params.getValue(params.id,c.field)),
+          );
+
+        //   api
+        //     .getAllColumns()
+        //     .filter((c) => c.field !== '__check__' && !!c)
+        //     .forEach(
+        //       (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
+        //     );
+          //alert(thisRow.id);
+    
+          //return alert(JSON.stringify(thisRow, null, 4));
+
+          const confirmBox = window.confirm(
+            "Do you really want to delete this user?"
+          )
+          if (confirmBox === true) {
+            axios
+            .delete(`http://localhost:8000/master/productionorder/delete/${thisRow.id}`,
+            {
+              data: { 
+                "process_order_number":thisRow.process_order_number, 
+                "email" : thisRow.email,
+                "userRole" : thisRow.userRole,
+                "customer_name" : thisRow.customer_id,
+                "loggedInUsername": window.localStorage.getItem('loggedInUsername'),
+                "loggedInUserrole": window.localStorage.getItem('loggedInUserrole')
+              }
+            })
+            .then(() => {
+              getData();
+              //alert("anju");
+              //navigate("/account/read");
+              window.location.reload();
+            });
+          }
+        };
+  
+        if(props.deleteButtonStatus === "enabled") {
+          return <button
+            className="btn btn-danger" 
+            onClick={onClick}><MdIcons.MdDelete size={23}/></button>;
+        }
+        else if(props.deleteButtonStatus === "disabled") {
+          return <button
+            className="btn btn-danger" 
+            disabled = "true"
+            onClick={onClick}><MdIcons.MdDelete size={23}/></button>;
+        }
+      },
+    },
+    {
+      field: 'properties',
+      headerName: 'Properties',
+      flex: 1,
+      sortable: false,
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation(); // don't select this row after clicking
+  
+          const api: GridApi = params.api;
+          const thisRow: Record<string, GridCellValue> = {};
+  
+          api
+            .getAllColumns()
+            .filter((c) => c.field !== '__check__' && !!c)
+            .forEach(
+              (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
+            );
+          //alert(thisRow.name);
+          navigate("/productionorder/productionorderproperty/"+thisRow.id);
+  
+          //return alert(JSON.stringify(thisRow, null, 4));
+        };
+  
+        //alert(currentUserrole);
+
+        if(props.editButtonStatus === "enabled") {
+          return <button
+            className="btn btn-dark" 
+            onClick={onClick}><AiIcons.AiFillPropertySafety size={23}/></button>;
+        }
+        else if(props.editButtonStatus === "disabled") {
+          return <button
+            className="btn btn-dark" 
+            disabled = "true"
+            onClick={onClick}><AiIcons.AiFillPropertySafety size={23}/></button>;
+        }
+      },
+    },
+  ];
+
+
+  
+
+ 
+  // function createRows(rowDatas, manufactureDatas,productDatas) {
+  //   var slno=1;
+  //   //alert(rowDatas.length);
+  //   let tempArrayFunction = [];
+
+
+  //   rowDatas.map(rowData => {
+  //       manufactureDatas.map(manufactureDataTemp=>{
+  //           if(manufactureDataTemp['id']===rowData.manufacturinglocation_id){
+  //               productDatas.map(productdataTemp=>{
+  //                   if(productdataTemp['id']===rowData.product_conn)
+  //                   {
+  //                       // if(rowData.created_by===window.localStorage.getItem('loggedInUsername')){
+  //                           tempArrayFunction.push({
+  //                           'slno':slno++,
+  //                           'id':rowData.id, 
+  //                           'process_order_number':rowData.process_order_number,
+  //                           'batch_number':rowData.batch_number,
+  //                           'manufacturing_location':manufactureDataTemp['name'],
+  //                           //'Production_line_id':res.data[0].system_name,
+  //                           'product_id':rowData.product_conn,
+  //                           'product_conn':productdataTemp['name'],
+  //                           'regulation':rowData.regulation,
+  //                           'production_date':rowData.production_date,
+  //                           'produced':rowData.produced,
+  //                           'requested':rowData.requested,
+  //                           'created_by':rowData.created_by,
+  //                           'status':rowData.status,
+  //                           //'packaging_Version':row
+  //                           });
+  //                       // }
+  //                   }
+  //               })
+  //           }
+  //       })
+  //   })
+
+
+  function createRows(rowDatas) {
+    var slno=1;
+    //alert(rowDatas.length);
+    let tempArrayFunction = [];
+    rowDatas.map(rowData => {
+      //alert(rowData.id);
+      // if(rowData.created_by === window.localStorage.getItem('loggedInUsername')) {
+      tempArrayFunction.push({ 'slno':slno++,
+                                'id':rowData.id, 
+                                'process_order_number':rowData.process_order_number,
+                                'batch_number':rowData.batch_number,
+                                'manufacturing_location':rowData.manufacturing_location,
+                                //'Production_line_id':res.data[0].system_name,
+                                'product_id':rowData.product_conn,
+                                'product_conn':rowData.product_conn,
+                                'regulation':rowData.regulation,
+                                'production_date':rowData.production_date,
+                                'produced':rowData.produced,
+                                'requested':rowData.requested,
+                                'created_by':rowData.created_by,
+                                'status':rowData.status,});
+      // }
+ 
+    })
+
+
+
+    //alert(userDataRows[0]['id']);
+    setSelectedDIV_state(<div class="container-fluid">
+        <div class="card shadow mb-4"> 
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">ProductionOrder</h6>                         
+            </div>
+
+            <div class="card-body pb-1">
+              <button className='btn btn-primary' onClick={navigateToCreatePage}>Create Productionorder</button>                      
+            </div>
+            <div class="card-body">  
+                <div className="prr" style={{ height: 700, width: '100%'}} >
+                    <DataGrid rows={tempArrayFunction} columns={userDataColumns} pageSize={10} components={{ Toolbar: CustomToolbar }}/>
+                </div>
+            </div>
+        </div>
+    </div>);
+
+    
+  }
+  function getData()
+  {
+     axios
+     .get("http://127.0.0.1:8000/master/productionorder")
+     .then((res)=>{
+         createRows(res.data);
+     });
+  }
+
+//   function getData() {
+//     //alert("anu");
+    
+//     axios
+//       .get("http://127.0.0.1:8000/accounts/register/")
+//       .then((res) => {
+//         createRows(res.data);
+//       });
+//   }
+  
+  const navigateToCreatePage = () => {
+    navigate("/productionorder/new/new");
+  };
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  } 
+
+  useEffect(() => {
+    getData();
+  }, []);
+ 
+    return(
+      <>
+        {selectedDIV_state}                               
+      </>
+    )
+};
+
+export default ProductionOrderDataGrid;
+

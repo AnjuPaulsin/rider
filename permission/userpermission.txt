@@ -1,0 +1,1351 @@
+userpermission
+----------------------
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router";
+import Sidebar from '../Common/Sidebar';
+import Header from '../Common/Header';
+import axios from 'axios';
+import Footer from '../Common/Footer';
+
+const UserrolePermissions = () => {
+
+   
+    const navigate = useNavigate();
+
+    const [userrole_state, setUserRoleState] = useState("");
+    const [permission,setPermission]=useState("");
+
+    const [Registeredusers_read_checked_state, setRegisteredusers_read_checked_state] = useState(false);
+    const [Registeredusers_create_checked_state, setRegisteredusers_create_checked_state] = useState(false);
+    const [Registeredusers_update_checked_state, setRegisteredusers_update_checked_state] = useState(false);
+    const [Registeredusers_delete_checked_state, setRegisteredusers_delete_checked_state] = useState(false);
+    
+
+    const [Company_read_checked_state, setCompany_read_checked_state] = useState(false);
+    const [Company_create_checked_state, setCompany_create_checked_state] = useState(false);
+    const [Company_update_checked_state, setCompany_update_checked_state] = useState(false);
+    const [Company_delete_checked_state, setCompany_delete_checked_state] = useState(false);
+
+    
+    const [Customer_read_checked_state, setCustomer_read_checked_state] = useState(false);
+    const [Customer_create_checked_state, setCustomer_create_checked_state] = useState(false);
+    const [Customer_update_checked_state, setCustomer_update_checked_state] = useState(false);
+    const [Customer_delete_checked_state, setCustomer_delete_checked_state] = useState(false);
+
+    const [Customerlocation_read_checked_state, setCustomerlocation_read_checked_state] = useState(false);
+    const [Customerlocation_create_checked_state, setCustomerlocation_create_checked_state] = useState(false);
+    const [Customerlocation_update_checked_state, setCustomerlocation_update_checked_state] = useState(false);
+    const [Customerlocation_delete_checked_state, setCustomerlocation_delete_checked_state] = useState(false);
+
+    const [Product_read_checked_state, setProduct_read_checked_state] = useState(false);
+    const [Product_create_checked_state, setProduct_create_checked_state] = useState(false);
+    const [Product_update_checked_state, setProduct_update_checked_state] = useState(false);
+    const [Product_delete_checked_state, setProduct_delete_checked_state] = useState(false);
+
+    const [Serialnoprovider_read_checked_state, setSerialnoprovider_read_checked_state] = useState(false);
+    const [Serialnoprovider_create_checked_state, setSerialnoprovider_create_checked_state] = useState(false);
+    const [Serialnoprovider_update_checked_state, setSerialnoprovider_update_checked_state] = useState(false);
+    const [Serialnoprovider_delete_checked_state, setSerialnoprovider_delete_checked_state] = useState(false);
+
+    const [Gtinserialpool_read_checked_state, setGtinserialpool_read_checked_state] = useState(false);
+    const [Gtinserialpool_create_checked_state, setGtinserialpool_create_checked_state] = useState(false);
+    const [Gtinserialpool_update_checked_state, setGtinserialpool_update_checked_state] = useState(false);
+    const [Gtinserialpool_delete_checked_state, setGtinserialpool_delete_checked_state] = useState(false);
+
+    const [Manufacturinglocation_read_checked_state, setManufacturinglocation_read_checked_state] = useState(false);
+    const [Manufacturinglocation_create_checked_state, setManufacturinglocation_create_checked_state] = useState(false);
+    const [Manufacturinglocation_update_checked_state, setManufacturinglocation_update_checked_state] = useState(false);
+    const [Manufacturinglocation_delete_checked_state, setManufacturinglocation_delete_checked_state] = useState(false);
+
+    const [Productionline_read_checked_state, setProductionline_read_checked_state] = useState(false);
+    const [Productionline_create_checked_state, setProductionline_create_checked_state] = useState(false);
+    const [Productionline_update_checked_state, setProductionline_update_checked_state] = useState(false);
+    const [Productionline_delete_checked_state, setProductionline_delete_checked_state] = useState(false);
+
+    const [Productionorder_read_checked_state, setProductionorder_read_checked_state] = useState(false);
+    const [Productionorder_create_checked_state, setProductionorder_create_checked_state] = useState(false);
+    const [Productionorder_update_checked_state, setProductionorder_update_checked_state] = useState(false);
+    const [Productionorder_delete_checked_state, setProductionorder_delete_checked_state] = useState(false);
+
+    const [Registeredusers_read, setRegisteredusers_read] = useState("");
+    const [saveButtonText_state, setSaveButtonText_state] = useState("Save the data");
+    const [saveButtonMode_state, setSaveButtonMode_state] = useState(false);
+
+    const [insert, setInsert] = useState("");
+    const [update, setUpdate] = useState("");
+    const [del, setDel] = useState("");
+
+    
+    function handleEdit() {
+
+        //e.preventDefault();
+        //alert(Registeredusers_read);
+
+        //alert(Registeredusers_checked);
+
+        //alert(Registeredusers_create_checked_state);
+        if(userrole_state==="")
+        {
+            alert("Select userrole");
+            return;
+        }
+        setSaveButtonText_state("Saving Data");
+        setSaveButtonMode_state(true);
+        axios.post('http://127.0.0.1:8000/accounts/userPermissionEdit/', { 
+            userrole : userrole_state,
+            Registeredusers_read:Registeredusers_read_checked_state===true ? "Checked" : "Unchecked",
+            Registeredusers_create: Registeredusers_create_checked_state === true ? "Checked" : "Unchecked",
+            Registeredusers_update: Registeredusers_update_checked_state === true ? "Checked" : "Unchecked",
+            Registeredusers_delete: Registeredusers_delete_checked_state === true ? "Checked" : "Unchecked",
+
+
+            Company_read:Company_read_checked_state===true ? "Checked" : "Unchecked",
+            Company_create: Company_create_checked_state === true ? "Checked" : "Unchecked",
+            Company_update: Company_update_checked_state === true ? "Checked" : "Unchecked",
+            Company_delete: Company_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Customer_read:Customer_read_checked_state===true ? "Checked" : "Unchecked",
+            Customer_create: Customer_create_checked_state === true ? "Checked" : "Unchecked",
+            Customer_update: Customer_update_checked_state === true ? "Checked" : "Unchecked",
+            Customer_delete: Customer_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Customerlocation_read:Customerlocation_read_checked_state===true ? "Checked" : "Unchecked",
+            Customerlocation_create: Customerlocation_create_checked_state === true ? "Checked" : "Unchecked",
+            Customerlocation_update: Customerlocation_update_checked_state === true ? "Checked" : "Unchecked",
+            Customerlocation_delete: Customerlocation_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Product_read: Product_read_checked_state === true ? "Checked" : "Unchecked",
+            Product_create: Product_create_checked_state === true ? "Checked" : "Unchecked",
+            Product_update: Product_update_checked_state === true ? "Checked" : "Unchecked",
+            Product_delete: Product_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Serialnoprovider_read: Serialnoprovider_read_checked_state === true ? "Checked" : "Unchecked",
+            Serialnoprovider_create: Serialnoprovider_create_checked_state === true ? "Checked" : "Unchecked",
+            Serialnoprovider_update: Serialnoprovider_update_checked_state === true ? "Checked" : "Unchecked",
+            Serialnoprovider_delete: Serialnoprovider_delete_checked_state === true ? "Checked" : "Unchecked",
+        
+            Gtinserialpool_read: Gtinserialpool_read_checked_state === true ? "Checked" : "Unchecked",
+            Gtinserialpool_create: Gtinserialpool_create_checked_state === true ? "Checked" : "Unchecked",
+            Gtinserialpool_update: Gtinserialpool_update_checked_state === true ? "Checked" : "Unchecked",
+            Gtinserialpool_delete: Gtinserialpool_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Manufacturinglocation_read: Manufacturinglocation_read_checked_state === true ? "Checked" : "Unchecked",
+            Manufacturinglocation_create: Manufacturinglocation_create_checked_state === true ? "Checked" : "Unchecked",
+            Manufacturinglocation_update: Manufacturinglocation_update_checked_state === true ? "Checked" : "Unchecked",
+            Manufacturinglocation_delete: Manufacturinglocation_delete_checked_state === true ? "Checked" : "Unchecked",
+
+              
+            Productionline_read: Productionline_read_checked_state === true ? "Checked" : "Unchecked",
+            Productionline_create: Productionline_create_checked_state === true ? "Checked" : "Unchecked",
+            Productionline_update: Productionline_update_checked_state === true ? "Checked" : "Unchecked",
+            Productionline_delete: Productionline_delete_checked_state === true ? "Checked" : "Unchecked",
+
+            Productionorder_read: Productionorder_read_checked_state === true ? "Checked" : "Unchecked",
+            Productionorder_create: Productionorder_create_checked_state === true ? "Checked" : "Unchecked",
+            Productionorder_update: Productionorder_update_checked_state === true ? "Checked" : "Unchecked",
+            Productionorder_delete: Productionorder_delete_checked_state === true ? "Checked" : "Unchecked",
+
+
+        })
+        .then((response) => {
+            setSaveButtonText_state("Save the data");
+            setSaveButtonMode_state(false);
+        });
+    }
+
+
+
+    function getPermission(event) {
+        // alert(event.target.value)
+        setUserRoleState(event.target.value); 
+        axios
+         .get("http://localhost:8000/accounts/userrolePermissionsRead",
+          {
+            // auth: {
+            //   username: username,
+            //   password: password
+            // }
+          },
+          {
+            'param': 'anu' 
+          })
+          .then((res) => {
+    //  alert(res.data['activity_name'])
+            res.data.map(data => {
+                if(data['activity_name']==='registeredUsers')
+                {
+                   
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setRegisteredusers_read_checked_state(true):setRegisteredusers_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setRegisteredusers_create_checked_state(true):setRegisteredusers_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setRegisteredusers_update_checked_state(true):setRegisteredusers_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setRegisteredusers_delete_checked_state(true):setRegisteredusers_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setRegisteredusers_create_checked_state(true):setRegisteredusers_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setRegisteredusers_read_checked_state(true):setRegisteredusers_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setRegisteredusers_delete_checked_state(true):setRegisteredusers_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setRegisteredusers_update_checked_state(true):setRegisteredusers_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setRegisteredusers_read_checked_state(true):setRegisteredusers_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setRegisteredusers_create_checked_state(true):setRegisteredusers_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setRegisteredusers_update_checked_state(true):setRegisteredusers_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setRegisteredusers_delete_checked_state(true):setRegisteredusers_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setRegisteredusers_read_checked_state(true):setRegisteredusers_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setRegisteredusers_create_checked_state(true):setRegisteredusers_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setRegisteredusers_update_checked_state(true):setRegisteredusers_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setRegisteredusers_delete_checked_state(true):setRegisteredusers_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='company')
+                {
+                   
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setCompany_read_checked_state(true):setCompany_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setCompany_create_checked_state(true):setCompany_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setCompany_update_checked_state(true):setCompany_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setCompany_delete_checked_state(true):setCompany_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setCompany_create_checked_state(true):setCompany_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setCompany_read_checked_state(true):setCompany_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setCompany_delete_checked_state(true):setCompany_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setCompany_update_checked_state(true):setCompany_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setCompany_read_checked_state(true):setCompany_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setCompany_create_checked_state(true):setCompany_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setCompany_update_checked_state(true):setCompany_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setCompany_delete_checked_state(true):setCompany_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setCompany_read_checked_state(true):setCompany_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setCompany_create_checked_state(true):setCompany_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setCompany_update_checked_state(true):setCompany_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setCompany_delete_checked_state(true):setCompany_delete_checked_state(false);
+                    }
+                }
+
+                else if(data['activity_name']==='customer')
+                {
+                
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setCustomer_read_checked_state(true):setCustomer_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setCustomer_create_checked_state(true):setCustomer_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setCustomer_update_checked_state(true):setCustomer_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setCustomer_delete_checked_state(true):setCustomer_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setCustomer_create_checked_state(true):setCustomer_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setCustomer_read_checked_state(true):setCustomer_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setCustomer_delete_checked_state(true):setCustomer_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setCustomer_update_checked_state(true):setCustomer_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setCustomer_read_checked_state(true):setCustomer_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setCustomer_create_checked_state(true):setCustomer_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setCustomer_update_checked_state(true):setCustomer_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setCustomer_delete_checked_state(true):setCustomer_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setCustomer_read_checked_state(true):setCustomer_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setCustomer_create_checked_state(true):setCustomer_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setCustomer_update_checked_state(true):setCustomer_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setCustomer_delete_checked_state(true):setCustomer_delete_checked_state(false);
+                    }
+                }
+          
+                else if(data['activity_name']==='customerlocation')
+                {
+                     
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setCustomerlocation_read_checked_state(true):setCustomerlocation_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setCustomerlocation_create_checked_state(true):setCustomerlocation_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setCustomerlocation_update_checked_state(true):setCustomerlocation_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setCustomerlocation_delete_checked_state(true):setCustomerlocation_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setCustomerlocation_create_checked_state(true):setCustomerlocation_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setCustomerlocation_read_checked_state(true):setCustomerlocation_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setCustomerlocation_delete_checked_state(true):setCustomerlocation_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setCustomerlocation_update_checked_state(true):setCustomerlocation_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setCustomerlocation_read_checked_state(true):setCustomerlocation_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setCustomerlocation_create_checked_state(true):setCustomerlocation_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setCustomerlocation_update_checked_state(true):setCustomerlocation_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setCustomerlocation_delete_checked_state(true):setCustomerlocation_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setCustomerlocation_read_checked_state(true):setCustomerlocation_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setCustomerlocation_create_checked_state(true):setCustomerlocation_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setCustomerlocation_update_checked_state(true):setCustomerlocation_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setCustomerlocation_delete_checked_state(true):setCustomerlocation_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='product')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setProduct_read_checked_state(true):setProduct_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setProduct_create_checked_state(true):setProduct_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setProduct_update_checked_state(true):setProduct_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setProduct_delete_checked_state(true):setProduct_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setProduct_create_checked_state(true):setProduct_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setProduct_read_checked_state(true):setProduct_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setProduct_delete_checked_state(true):setProduct_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setProduct_update_checked_state(true):setProduct_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setProduct_read_checked_state(true):setProduct_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setProduct_create_checked_state(true):setProduct_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setProduct_update_checked_state(true):setProduct_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setProduct_delete_checked_state(true):setProduct_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setProduct_read_checked_state(true):setProduct_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setProduct_create_checked_state(true):setProduct_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setProduct_update_checked_state(true):setProduct_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setProduct_delete_checked_state(true):setProduct_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='serialnoprovider')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setSerialnoprovider_read_checked_state(true):setSerialnoprovider_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setSerialnoprovider_create_checked_state(true):setSerialnoprovider_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setSerialnoprovider_update_checked_state(true):setSerialnoprovider_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setSerialnoprovider_delete_checked_state(true):setSerialnoprovider_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setSerialnoprovider_create_checked_state(true):setSerialnoprovider_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setSerialnoprovider_read_checked_state(true):setSerialnoprovider_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setSerialnoprovider_delete_checked_state(true):setSerialnoprovider_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setSerialnoprovider_update_checked_state(true):setSerialnoprovider_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setSerialnoprovider_read_checked_state(true):setSerialnoprovider_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setSerialnoprovider_create_checked_state(true):setSerialnoprovider_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setSerialnoprovider_update_checked_state(true):setSerialnoprovider_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setSerialnoprovider_delete_checked_state(true):setSerialnoprovider_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setSerialnoprovider_read_checked_state(true):setSerialnoprovider_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setSerialnoprovider_create_checked_state(true):setSerialnoprovider_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setSerialnoprovider_update_checked_state(true):setSerialnoprovider_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setSerialnoprovider_delete_checked_state(true):setSerialnoprovider_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='gtinserialpool')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setGtinserialpool_read_checked_state(true):setGtinserialpool_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setGtinserialpool_create_checked_state(true):setGtinserialpool_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setGtinserialpool_update_checked_state(true):setGtinserialpool_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setGtinserialpool_delete_checked_state(true):setGtinserialpool_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setGtinserialpool_create_checked_state(true):setGtinserialpool_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setGtinserialpool_read_checked_state(true):setGtinserialpool_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setGtinserialpool_delete_checked_state(true):setGtinserialpool_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setGtinserialpool_update_checked_state(true):setGtinserialpool_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setGtinserialpool_read_checked_state(true):setGtinserialpool_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setGtinserialpool_create_checked_state(true):setGtinserialpool_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setGtinserialpool_update_checked_state(true):setGtinserialpool_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setGtinserialpool_delete_checked_state(true):setGtinserialpool_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setGtinserialpool_read_checked_state(true):setGtinserialpool_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setGtinserialpool_create_checked_state(true):setGtinserialpool_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setGtinserialpool_update_checked_state(true):setGtinserialpool_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setGtinserialpool_delete_checked_state(true):setGtinserialpool_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='manufacturinglocation')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setManufacturinglocation_read_checked_state(true):setManufacturinglocation_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setManufacturinglocation_create_checked_state(true):setManufacturinglocation_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setManufacturinglocation_update_checked_state(true):setManufacturinglocation_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setManufacturinglocation_delete_checked_state(true):setManufacturinglocation_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setManufacturinglocation_create_checked_state(true):setManufacturinglocation_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setManufacturinglocation_read_checked_state(true):setManufacturinglocation_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setManufacturinglocation_delete_checked_state(true):setManufacturinglocation_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setManufacturinglocation_update_checked_state(true):setManufacturinglocation_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setManufacturinglocation_read_checked_state(true):setManufacturinglocation_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setManufacturinglocation_create_checked_state(true):setManufacturinglocation_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setManufacturinglocation_update_checked_state(true):setManufacturinglocation_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setManufacturinglocation_delete_checked_state(true):setManufacturinglocation_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setManufacturinglocation_read_checked_state(true):setManufacturinglocation_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setManufacturinglocation_create_checked_state(true):setManufacturinglocation_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setManufacturinglocation_update_checked_state(true):setManufacturinglocation_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setManufacturinglocation_delete_checked_state(true):setManufacturinglocation_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='productionline')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setProductionline_read_checked_state(true):setProductionline_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setProductionline_create_checked_state(true):setProductionline_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setProductionline_update_checked_state(true):setProductionline_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setProductionline_delete_checked_state(true):setProductionline_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setProductionline_create_checked_state(true):setProductionline_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setProductionline_read_checked_state(true):setProductionline_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setProductionline_delete_checked_state(true):setProductionline_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setProductionline_update_checked_state(true):setProductionline_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setProductionline_read_checked_state(true):setProductionline_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setProductionline_create_checked_state(true):setProductionline_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setProductionline_update_checked_state(true):setProductionline_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setProductionline_delete_checked_state(true):setProductionline_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setProductionline_read_checked_state(true):setProductionline_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setProductionline_create_checked_state(true):setProductionline_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setProductionline_update_checked_state(true):setProductionline_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setProductionline_delete_checked_state(true):setProductionline_delete_checked_state(false);
+                    }
+                }
+                else if(data['activity_name']==='productionorder')
+                {
+                    // alert("haii")
+                    if(event.target.value==="admin")
+                    {
+                        data.admin['READ']==="Checked" ? setProductionorder_read_checked_state(true):setProductionorder_read_checked_state(false);
+                        data.admin['CREATE']==="Checked"?setProductionorder_create_checked_state(true):setProductionorder_create_checked_state(false);
+                        data.admin['UPDATE']==="Checked"?setProductionorder_update_checked_state(true):setProductionorder_update_checked_state(false);
+                        data.admin['DELETE']==="Checked"?setProductionorder_delete_checked_state(true):setProductionorder_delete_checked_state(false);
+                    }
+                    else if(event.target.value==="supervisor")
+                    {
+                        data.supervisor['CREATE']==="Checked" ?setProductionorder_create_checked_state(true):setProductionorder_create_checked_state(false);
+                        data.supervisor['READ']==="Checked" ?setProductionorder_read_checked_state(true):setProductionorder_read_checked_state(false);
+                        data.supervisor['DELETE']==="Checked" ?setProductionorder_delete_checked_state(true):setProductionorder_delete_checked_state(false);
+                        data.supervisor['UPDATE']==="Checked" ?setProductionorder_update_checked_state(true):setProductionorder_update_checked_state(false);
+                    }
+                    else if(event.target.value==="masterdata")
+                    {
+                        data.masterdata['READ']==='Checked' ?setProductionorder_read_checked_state(true):setProductionorder_read_checked_state(false);
+                        data.masterdata['CREATE']==='Checked' ?setProductionorder_create_checked_state(true):setProductionorder_create_checked_state(false);
+                        data.masterdata['UPDATE']==='Checked' ?setProductionorder_update_checked_state(true):setProductionorder_update_checked_state(false);
+                        data.masterdata['DELETE']==='Checked' ?setProductionorder_delete_checked_state(true):setProductionorder_delete_checked_state(false);
+                    }
+                    else
+                    {
+                        data.operator['READ']==='Checked'? setProductionorder_read_checked_state(true):setProductionorder_read_checked_state(false);
+                        data.operator['CREATE']==='Checked'? setProductionorder_create_checked_state(true):setProductionorder_create_checked_state(false);
+                        data.operator['UPDATE']==='Checked'? setProductionorder_update_checked_state(true):setProductionorder_update_checked_state(false);
+                        data.operator['DELETE']=='Checked'? setProductionorder_delete_checked_state(true):setProductionorder_delete_checked_state(false);
+                    }
+                }
+              
+              
+          });
+                    
+    
+          });
+      }
+    /*
+    function userrolePermissionsRead() {
+        axios.get("http://127.0.0.1:8000/accounts/userrolePermissionsRead")
+        .then((res) => {
+            alert(res.data[0].admin.CREATE);
+        });
+    }*/
+
+    useEffect(() => {
+        // userrolePermissionsRead();
+        // getPermissions();
+    }, []);
+
+    
+
+    return(
+        <>
+
+<div id="wrapper">
+
+      <Sidebar pageName = "userrolePermissions"/>
+
+      <div id="content-wrapper" class="d-flex flex-column">
+
+      
+            <div id="content">
+
+                <Header>      
+                </Header>
+                <div class="container-fluid">
+
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                             <h6 class="m-0 font-weight-bold text-primary">Userrole Permissions</h6>                         
+                        </div>
+
+
+                        <div class="card-body pb-1">
+                            <div class="medium mb-2">Select the user role</div>
+
+                            <select class="form-select form-select-lg p-2" aria-label=".form-select-lg example" onChange={getPermission} >
+                                <option selected>Select the user role</option>
+                                <option value="">Select</option>
+                                <option value="admin">Admin</option>
+                                <option value="masterdata">Masterdata</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="operator">Operator</option>
+                                
+                            </select>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                        <th>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="selectall" id="selectall_id" class="form-check-input"></input>
+                                                    <label class="form-check-label" for="selectall_id">
+                                                        Select all/none
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="selectall_read" id="selectall_read_id" class="form-check-input"></input>
+                                                    <label class="form-check-label" for="selectall_read_id">
+                                                        Select all read
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="selectall_insert" id="selectall_insert_id" class="form-check-input"></input>
+                                                    <label class="form-check-label" for="selectall_insert_id">
+                                                        Select all insert
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="selectall_update" id="selectall_update_id" class="form-check-input"></input>
+                                                    <label class="form-check-label" for="selectall_update_id">
+                                                        Select all update
+                                                    </label>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="selectall_delete" id="selectall_delete_id" class="form-check-input"></input>
+                                                    <label class="form-check-label" for="selectall_delete_id">
+                                                        Select all delete
+                                                    </label>
+                                                </div>
+                                            </th>
+                                         
+                                        </tr>
+                                        <tr>
+                                            <th>Role</th>
+                                            <th>Read</th>
+                                            <th>Insert</th>
+                                            <th>Update</th>
+                                            <th>Delete</th>
+                                         
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr>
+                                            <td>Registered Users</td>
+                                            <td><input type="checkbox" 
+                                                    name="Registeredusers_read" 
+                                                   checked={Registeredusers_read_checked_state} onChange={()=>setRegisteredusers_read_checked_state(!Registeredusers_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Registeredusers_create"
+                                                    checked = {Registeredusers_create_checked_state}
+                                                    onChange={() => setRegisteredusers_create_checked_state(!Registeredusers_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Registeredusers_update"
+                                             checked = {Registeredusers_update_checked_state}
+                                             onChange={() => setRegisteredusers_update_checked_state(!Registeredusers_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Registeredusers_delete" 
+                                            checked = {Registeredusers_delete_checked_state}
+                                            onChange={() => setRegisteredusers_delete_checked_state(!Registeredusers_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Company</td>
+                                            <td><input type="checkbox" 
+                                                    name="Company_read" 
+                                                   checked={Company_read_checked_state} 
+                                                   onChange={()=>setCompany_read_checked_state(!Company_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Company_create"
+                                                    checked = {Company_create_checked_state}
+                                                    onChange={() => setCompany_create_checked_state(!Company_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Company_update"
+                                             checked = {Company_update_checked_state}
+                                             onChange={() => setCompany_update_checked_state(!Company_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Company_delete" 
+                                            checked = {Company_delete_checked_state}
+                                            onChange={() => setCompany_delete_checked_state(!Company_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+
+                                        <tr>
+                                            <td>Customer</td>
+                                            <td><input type="checkbox" 
+                                                    name="Customer_read" 
+                                                   checked={Customer_read_checked_state} 
+                                                   onChange={()=>setCustomer_read_checked_state(!Customer_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Customer_create"
+                                                    checked = {Customer_create_checked_state}
+                                                    onChange={() => setCustomer_create_checked_state(!Customer_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Customer_update"
+                                             checked = {Customer_update_checked_state}
+                                             onChange={() => setCustomer_update_checked_state(!Customer_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Customer_delete" 
+                                            checked = {Customer_delete_checked_state}
+                                            onChange={() => setCustomer_delete_checked_state(!Customer_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+
+                                        <tr>
+                                            <td>CustomerLocation</td>
+                                            <td><input type="checkbox" 
+                                                    name="Customerlocation_read" 
+                                                   checked={Customerlocation_read_checked_state} 
+                                                   onChange={()=>setCustomerlocation_read_checked_state(!Customerlocation_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Customerlocation_create"
+                                                    checked = {Customerlocation_create_checked_state}
+                                                    onChange={() => setCustomerlocation_create_checked_state(!Customerlocation_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Customerlocation_update"
+                                             checked = {Customerlocation_update_checked_state}
+                                             onChange={() => setCustomerlocation_update_checked_state(!Customerlocation_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Customerlocation_delete" 
+                                            checked = {Customerlocation_delete_checked_state}
+                                            onChange={() => setCustomerlocation_delete_checked_state(!Customerlocation_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Product</td>
+                                            <td><input type="checkbox" 
+                                                    name="Product_read" 
+                                                   checked={Product_read_checked_state} 
+                                                   onChange={()=>setProduct_read_checked_state(!Product_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Product_create"
+                                                    checked = {Product_create_checked_state}
+                                                    onChange={() => setProduct_create_checked_state(!Product_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Product_update"
+                                             checked = {Product_update_checked_state}
+                                             onChange={() => setProduct_update_checked_state(!Product_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Product_delete" 
+                                            checked = {Product_delete_checked_state}
+                                            onChange={() => setProduct_delete_checked_state(!Product_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>SerialNumber Provider</td>
+                                            <td><input type="checkbox" 
+                                                    name="Serialnoprovider_read" 
+                                                   checked={Serialnoprovider_read_checked_state} 
+                                                   onChange={()=>setSerialnoprovider_read_checked_state(!Serialnoprovider_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Serialnoprovider_create"
+                                                    checked = {Serialnoprovider_create_checked_state}
+                                                    onChange={() => setSerialnoprovider_create_checked_state(!Serialnoprovider_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Serialnoprovider_update"
+                                             checked = {Serialnoprovider_update_checked_state}
+                                             onChange={() => setSerialnoprovider_update_checked_state(!Serialnoprovider_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Serialnoprovider_delete" 
+                                            checked = {Serialnoprovider_delete_checked_state}
+                                            onChange={() => setSerialnoprovider_delete_checked_state(!Serialnoprovider_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Downloading codes</td>
+                                            <td><input type="checkbox" 
+                                                    name="Gtinserialpool_read" 
+                                                   checked={Gtinserialpool_read_checked_state} 
+                                                   onChange={()=>setGtinserialpool_read_checked_state(!Gtinserialpool_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Gtinserialpool_create"
+                                                    checked = {Gtinserialpool_create_checked_state}
+                                                    onChange={() => setGtinserialpool_create_checked_state(!Gtinserialpool_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Gtinserialpool_update"
+                                             checked = {Gtinserialpool_update_checked_state}
+                                             onChange={() => setGtinserialpool_update_checked_state(!Gtinserialpool_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Gtinserialpool_delete" 
+                                            checked = {Gtinserialpool_delete_checked_state}
+                                            onChange={() => setGtinserialpool_delete_checked_state(!Gtinserialpool_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Manufacturing Location</td>
+                                            <td><input type="checkbox" 
+                                                    name="Manufacturinglocation_read" 
+                                                   checked={Manufacturinglocation_read_checked_state} 
+                                                   onChange={()=>setManufacturinglocation_read_checked_state(!Manufacturinglocation_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Manufacturinglocation_create"
+                                                    checked = {Manufacturinglocation_create_checked_state}
+                                                    onChange={() => setManufacturinglocation_create_checked_state(!Manufacturinglocation_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Manufacturinglocation_update"
+                                             checked = {Manufacturinglocation_update_checked_state}
+                                             onChange={() => setManufacturinglocation_update_checked_state(!Manufacturinglocation_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Manufacturinglocation_delete" 
+                                            checked = {Manufacturinglocation_delete_checked_state}
+                                            onChange={() => setManufacturinglocation_delete_checked_state(!Manufacturinglocation_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Production Line</td>
+                                            <td><input type="checkbox" 
+                                                    name="Productionline_read" 
+                                                   checked={Productionline_read_checked_state} 
+                                                   onChange={()=>setProductionline_read_checked_state(!Productionline_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Productionline_create"
+                                                    checked = {Productionline_create_checked_state}
+                                                    onChange={() => setProductionline_create_checked_state(!Productionline_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Productionline_update"
+                                             checked = {Productionline_update_checked_state}
+                                             onChange={() => setProductionline_update_checked_state(!Productionline_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Productionline_delete" 
+                                            checked = {Productionline_delete_checked_state}
+                                            onChange={() => setProductionline_delete_checked_state(!Productionline_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+                                        <tr>
+                                            <td>Production Order</td>
+                                            <td><input type="checkbox" 
+                                                    name="Productionorder_read" 
+                                                   checked={Productionorder_read_checked_state} 
+                                                   onChange={()=>setProductionorder_read_checked_state(!Productionorder_read_checked_state)}>
+                                                </input>
+                                            </td>
+                                            <td><input type="checkbox" 
+                                                    name="Productionorder_create"
+                                                    checked = {Productionorder_create_checked_state}
+                                                    onChange={() => setProductionorder_create_checked_state(!Productionorder_create_checked_state)}>
+                                                </input></td>
+                                             <td><input type="checkbox" name="Productionorder_update"
+                                             checked = {Productionorder_update_checked_state}
+                                             onChange={() => setProductionorder_update_checked_state(!Productionorder_update_checked_state)}
+                                            ></input></td>
+                                            <td><input type="checkbox" name="Productionorder_delete" 
+                                            checked = {Productionorder_delete_checked_state}
+                                            onChange={() => setProductionorder_delete_checked_state(!Productionorder_delete_checked_state)}></input></td>
+                                        
+                                        </tr>
+
+
+
+                                       
+   
+                                        <tr>
+                                            <td>Create product</td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td> 
+                                        </tr>
+
+                                        <tr>
+                                            <td>Send Productionorder to production</td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>Download Productionorder codes</td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>Import  Productionorder serialnumbers</td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>Finalize Productionorder</td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td>Create Shippingorder from Productionorder</td>
+                                            <td><input type="checkbox" ></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                            <td><input type="checkbox"></input></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <div class="my-3"></div>
+                                                <button onClick={handleEdit}  class="btn btn-danger" disabled={saveButtonMode_state}>
+                                                    {saveButtonText_state}
+                                                </button>
+                                            
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {/* <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer> */}
+            <Footer></Footer>
+        </div>
+
+    </div>
+
+        </>
+    )
+}
+
+export default UserrolePermissions
+-------------------------------------------------
+
+app.js
+------
+
+import ProductionOrder from './Components/ProductionOrder/ProductionOrder';
+import ProductionOrderCreate from './Components/ProductionOrder/ProductionOrderCreate';
+import ProductionOrderProperty from './Components/ProductionOrder/ProductionOrderProperty';
+
+-------------------
+<Route path="/productionorder" element={<ProductionOrder/>}></Route>
+ <Route path="/productionorder/:operation/:uniqueID" element={<ProductionOrderCreate/>}></Route>
+  <Route path="/productionorder/productionorderproperty/:uniqueID" element={<ProductionOrderProperty/>}></Route>
+
+
+
+
+-----------------------------------------------------
+
+
+class userPermissionEdit(APIView):
+    def post(self, request):
+
+        Registeredusers_json = {
+            'READ': request.data['Registeredusers_read'], 
+            'CREATE':request.data['Registeredusers_create'], 
+            'UPDATE': request.data['Registeredusers_update'],
+            'DELETE':request.data['Registeredusers_delete']
+        }
+        Company_json = {
+            'READ': request.data['Company_read'], 
+            'CREATE':request.data['Company_create'], 
+            'UPDATE': request.data['Company_update'],
+            'DELETE':request.data['Company_delete']
+        }
+        Customer_json = {
+            'READ': request.data['Customer_read'], 
+            'CREATE':request.data['Customer_create'], 
+            'UPDATE': request.data['Customer_update'],
+            'DELETE':request.data['Customer_delete']
+        }
+        Customerlocation_json = {
+            'READ': request.data['Customerlocation_read'], 
+            'CREATE':request.data['Customerlocation_create'], 
+            'UPDATE': request.data['Customerlocation_update'],
+            'DELETE':request.data['Customerlocation_delete']
+        }
+        Product_json = {
+            'READ': request.data['Product_read'], 
+            'CREATE':request.data['Product_create'], 
+            'UPDATE': request.data['Product_update'],
+            'DELETE':request.data['Product_delete']
+        }
+        Serialnoprovider_json = {
+            'READ': request.data['Serialnoprovider_read'], 
+            'CREATE':request.data['Serialnoprovider_create'], 
+            'UPDATE': request.data['Serialnoprovider_update'],
+            'DELETE':request.data['Serialnoprovider_delete']
+        }
+        Gtinserialpool_json = {
+            'READ': request.data['Gtinserialpool_read'], 
+            'CREATE':request.data['Gtinserialpool_create'], 
+            'UPDATE': request.data['Gtinserialpool_update'],
+            'DELETE':request.data['Gtinserialpool_delete']
+        }
+        Manufacturinglocation_json = {
+            'READ': request.data['Manufacturinglocation_read'], 
+            'CREATE':request.data['Manufacturinglocation_create'], 
+            'UPDATE': request.data['Manufacturinglocation_update'],
+            'DELETE':request.data['Manufacturinglocation_delete']
+        }
+        Productionline_json = {
+            'READ': request.data['Productionline_read'], 
+            'CREATE':request.data['Productionline_create'], 
+            'UPDATE': request.data['Productionline_update'],
+            'DELETE':request.data['Productionline_delete']
+        }
+        Productionorder_json = {
+            'READ': request.data['Productionorder_read'], 
+            'CREATE':request.data['Productionorder_create'], 
+            'UPDATE': request.data['Productionorder_update'],
+            'DELETE':request.data['Productionorder_delete']
+        }
+
+
+
+
+
+
+
+    
+
+ 
+        if(request.data['userrole']=='admin'):
+            userrole = UserrolePermissions.objects.get(activity_name='registeredUsers')
+            userrole.admin = Registeredusers_json
+            userrole.save()
+            company=UserrolePermissions.objects.get(activity_name="company")
+            company.admin=Company_json
+            company.save()
+            customer=UserrolePermissions.objects.get(activity_name="customer")
+            customer.admin=Customer_json
+            customer.save()
+            customerlocation=UserrolePermissions.objects.get(activity_name="customerlocation")
+            customerlocation.admin=Customerlocation_json
+            customerlocation.save()
+            product=UserrolePermissions.objects.get(activity_name="product")
+            product.admin=Product_json
+            product.save()
+            serialnoprovider=UserrolePermissions.objects.get(activity_name="serialnoprovider")
+            serialnoprovider.admin=Serialnoprovider_json
+            serialnoprovider.save()
+            gtinserialpool=UserrolePermissions.objects.get(activity_name="gtinserialpool")
+            gtinserialpool.admin=Gtinserialpool_json
+            gtinserialpool.save()
+            manufacturinglocation=UserrolePermissions.objects.get(activity_name="manufacturinglocation")
+            manufacturinglocation.admin=Manufacturinglocation_json
+            manufacturinglocation.save()
+            productionline=UserrolePermissions.objects.get(activity_name="productionline")
+            productionline.admin=Productionline_json
+            productionline.save()
+            productionorder = UserrolePermissions.objects.get(activity_name='productionorder')
+            productionorder.admin = Productionorder_json
+            productionorder.save()
+            return Response(200)
+        elif(request.data['userrole']=='masterdata'):
+            userrole = UserrolePermissions.objects.get(activity_name='registeredUsers')
+            userrole.masterdata = Registeredusers_json
+            userrole.save()
+            company=UserrolePermissions.objects.get(activity_name="company")
+            company.masterdata=Company_json
+            company.save()
+            customer=UserrolePermissions.objects.get(activity_name="customer")
+            customer.masterdata=Customer_json
+            customer.save()
+            customerlocation=UserrolePermissions.objects.get(activity_name="customerlocation")
+            customerlocation.masterdata=Customerlocation_json
+            customerlocation.save()
+            product=UserrolePermissions.objects.get(activity_name="product")
+            product.masterdata=Product_json
+            product.save()
+            serialnoprovider=UserrolePermissions.objects.get(activity_name="serialnoprovider")
+            serialnoprovider.masterdata=Serialnoprovider_json
+            serialnoprovider.save()
+            gtinserialpool=UserrolePermissions.objects.get(activity_name="gtinserialpool")
+            gtinserialpool.masterdata=Gtinserialpool_json
+            gtinserialpool.save()
+            manufacturinglocation=UserrolePermissions.objects.get(activity_name="manufacturinglocation")
+            manufacturinglocation.masterdata=Manufacturinglocation_json
+            manufacturinglocation.save()
+            productionline=UserrolePermissions.objects.get(activity_name="productionline")
+            productionline.masterdata=Productionline_json
+            productionline.save()
+            productionorder = UserrolePermissions.objects.get(activity_name='productionorder')
+            productionorder.masterdata = Productionorder_json
+            productionorder.save()
+            return Response(200)
+        elif(request.data['userrole']=='supervisor'):
+            userrole = UserrolePermissions.objects.get(activity_name='registeredUsers')
+            userrole.supervisor = Registeredusers_json
+            userrole.save() 
+            company=UserrolePermissions.objects.get(activity_name="company")
+            company.supervisor=Company_json
+            company.save()
+            customer=UserrolePermissions.objects.get(activity_name="customer")
+            customer.supervisor=Customer_json
+            customer.save()
+            customerlocation=UserrolePermissions.objects.get(activity_name="customerlocation")
+            customerlocation.supervisor=Customerlocation_json
+            customerlocation.save()
+            product=UserrolePermissions.objects.get(activity_name="product")
+            product.supervisor=Product_json
+            product.save()
+            serialnoprovider=UserrolePermissions.objects.get(activity_name="serialnoprovider")
+            serialnoprovider.supervisor=Serialnoprovider_json
+            serialnoprovider.save()
+            gtinserialpool=UserrolePermissions.objects.get(activity_name="gtinserialpool")
+            gtinserialpool.supervisor=Gtinserialpool_json
+            gtinserialpool.save()
+            manufacturinglocation=UserrolePermissions.objects.get(activity_name="manufacturinglocation")
+            manufacturinglocation.supervisor=Manufacturinglocation_json
+            manufacturinglocation.save()
+            productionline=UserrolePermissions.objects.get(activity_name="productionline")
+            productionline.supervisor=Productionline_json
+            productionorder = UserrolePermissions.objects.get(activity_name='productionorder')
+            productionorder.supervisor = Productionorder_json
+            productionorder.save()
+            productionline.save()
+            return Response(200)
+        elif(request.data['userrole']=='operator'):
+            userrole = UserrolePermissions.objects.get(activity_name='registeredUsers')
+            userrole.operator = Registeredusers_json
+            userrole.save()
+            company=UserrolePermissions.objects.get(activity_name="company")
+            company.operator=Company_json
+            company.save()
+            customer=UserrolePermissions.objects.get(activity_name="customer")
+            customer.operator=Customer_json
+            customer.save()
+            customerlocation=UserrolePermissions.objects.get(activity_name="customerlocation")
+            customerlocation.operator=Customerlocation_json
+            customerlocation.save()
+            product=UserrolePermissions.objects.get(activity_name="product")
+            product.operator=Product_json
+            product.save()
+            serialnoprovider=UserrolePermissions.objects.get(activity_name="serialnoprovider")
+            serialnoprovider.operator=Serialnoprovider_json
+            serialnoprovider.save()
+            gtinserialpool=UserrolePermissions.objects.get(activity_name="gtinserialpool")
+            gtinserialpool.operator=Gtinserialpool_json
+            gtinserialpool.save()
+            manufacturinglocation=UserrolePermissions.objects.get(activity_name="manufacturinglocation")
+            manufacturinglocation.operator=Manufacturinglocation_json
+            manufacturinglocation.save()
+            productionline=UserrolePermissions.objects.get(activity_name="productionline")
+            productionline.operator=Productionline_json
+            productionline.save()
+            productionorder = UserrolePermissions.objects.get(activity_name='productionorder')
+            productionorder.operator = Productionorder_json
+            productionorder.save()
+            return Response(200)
+      
+
+class UserrolePermissionsRead(APIView):
+    def get(self, request):
+        detailsObj = UserrolePermissions.objects.all().order_by('id')
+        serializeObj = UserrolePermissionsSerializer(detailsObj, many = True)
+        return Response(serializeObj.data)
+    ----------------------------------------------------------------
+
+model
+-------
+  
+  class ProductionOrder(models.Model):
+    id = models.AutoField(primary_key=True)
+    process_order_number = models.CharField(max_length= 20, unique= True)
+    created_by = models.CharField(max_length =100)
+    product_conn = models.ForeignKey(Product,on_delete= models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    batch_number = models.CharField(max_length=20,unique=True)
+    manufacturing_location = models.CharField(max_length=40)
+    gln_number =models.CharField(max_length=40,unique=True,null=True)
+    Production_line_id = models.ForeignKey(RegisteredSystem, related_name='productionline_to_batch', on_delete=models.CASCADE)
+    # product_identifier = models.CharField(max_length=100)
+    regulation = models.CharField(max_length=100,default=True)
+    production_date =models.DateField(null=True)
+    requested  = models.IntegerField(default=0)
+    produced = models.IntegerField(default=0)
+    status = models.CharField(max_length=20, choices = batch_status,default='Draft')
+    create_shippo = models.BooleanField(default=False)
+    packaging_Version = models.CharField(max_length=40,null=True)
+    expiration_date = models.DateField(null=True)
+    serialnoprovider=models.CharField(max_length=60,default="Tracelink")
+    quantity= models.CharField(max_length=20,null=True)
+    gtin_number = models.CharField(max_length=20,null=True,blank=True)
+    # serial_num_pool_id = models.CharField(max_length=100)  # serialnumbers_model_id
+    generic_name = models.CharField(max_length=50,null=True,blank=True)
+    composition = models.CharField(max_length=100,null=True,blank=True)
+    scheduled = models.DateField(max_length=100,null=True,blank=True)
+    usage = models.CharField(max_length=100,null=True,blank=True)
+    remark = models.CharField(max_length=100,null=True,blank=True)
+    product_Image = models.ImageField(null=True,blank=True)
+    wholesalers=models.CharField(max_length=50,null=True,blank=True)
+
+    Markets=models.CharField(max_length=100,null=True,blank=True)
+    country=models.CharField(max_length=100,null=True,blank=True)
+    email = models.EmailField(null=True)
+    Barcodetypename = models.CharField(max_length=20, unique= True, null=True)
+    model_name = models.CharField(max_length=50,null=True,blank=True)
+    stock_quantity= models.CharField(max_length=50,null=True,blank=True)
+    shipped= models.CharField(max_length=50,null=True,blank=True)
+
+    def __str__(self):
+        return self.manufacturing_location
+   
+
+    def __str__(self):
+        return self.system_name or ''
+---------------------------
+serializer
+---------
+class ProductionOrderSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductionOrder
+        # fields =['id','process_order_number','serialnoprovider','batch_number','manufacturing_location','product_conn','Production_line_id','regulation','production_date',
+        # 'expiration_date','packaging_Version','created_by','status','requested','produced']
+        fields="__all__"
+class ProductionOrderPropertySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductionOrder
+        fields =['id','generic_name','composition','scheduled','usage','remark','product_Image']
+----------------------------------------------------------
+urls
+---------
+    path('productionorder/', views.ProductionOrderView.as_view()),
+    path('productionorder/<int:id>/', views.ProductionOrderViewIndividual.as_view()),
+    path('productionorder/update/<int:pk>', views.updateProductionOrder.as_view()),
+    path('productionorder/delete/<int:pk>', views.deleteProductionOrder.as_view()),
+  
+    # path('productionorder/hrfedit/<int:pk>', views.updateHrf.as_view()),
+    #---------------------------------------------------------------------------------
+    path('poproperty/', views.PoPropertyView.as_view()),
+    path('poproperty/<int:id>',views.PoPropertyindividual.as_view()),
+    path('poproperty/update/<int:pk>', views.updatePoProperty.as_view()),
+views
+-----------------
+
+class ProductionOrderView(APIView):
+    def get(self, request):
+        detailsObj =ProductionOrder.objects.all().order_by('-id')
+        serializeObj = ProductionOrderSerializer(detailsObj, many = True)
+        return Response(serializeObj.data)
+
+ 
+    def post(self, request):
+        serializeObj =ProductionOrderSerializer(data=request.data)
+        if serializeObj.is_valid():
+            device=serializeObj.save()
+            historysave=History(modelName='productionorder',
+                            savedID=device.id,
+                            operationDone='create',
+                            doneByUser=request.data['loggedInUsername'],
+                            doneByUserRole=request.data['loggedInUserrole'],
+                            doneDateTime=datetime.datetime.now(),
+                            historyText="created a new productionorder " +request.data['process_order_number'])
+            historysave.save()
+            return Response(request.data['loggedInUsername'])   
+        return Response(serializeObj.errors)
+
+class ProductionOrderViewIndividual(APIView):
+    def get(self, request, id):
+        detailsObj = ProductionOrder.objects.all().filter(id=id)
+        serializeObj = ProductionOrderSerializer(detailsObj, many=True)
+        return Response(serializeObj.data)
+class updateProductionOrder(APIView):
+    def put(self, request, pk):
+        try:
+            detailObj =ProductionOrder.objects.get(pk=pk)
+        except:
+            return Response("Not found in database")
+
+        serializeObj = ProductionOrderSerializer(detailObj, data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+            if request.data['status']=='Closed':
+                stocksave=Stock(productionorder_num =request.data['process_order_number'],
+                            product_name=request.data['product_conn'],
+                            batch_num =request.data['batch_number'],
+                            created_by=request.data['created_by'],)
+                stocksave.save()
+            historysave=History(modelName='ProductionOrder',
+                                savedID=pk,
+                                operationDone='update',
+                                doneByUser=request.data['loggedInUsername'],
+                                doneByUserRole=request.data['loggedInUserrole'],
+                                doneDateTime=datetime.datetime.now(),
+                                historyText="Updated the productionorder "+"\t" +request.data['process_order_number'])
+
+            historysave.save()
+            # return Response(request.data['loggedInUser'])
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class deleteProductionOrder(APIView):
+    def delete(self, request, pk):
+        try:
+            detailsObj = ProductionOrder.objects.get(pk=pk)
+        except:
+            return Response("Not found in database")
+
+        detailsObj.delete()
+        historySave = History(modelName='productionorder',
+                              savedID=pk,
+                              operationDone='delete',
+                              doneByUser=request.data['loggedInUsername'],
+                              doneByUserRole=request.data['loggedInUserrole'],
+                              doneDateTime=datetime.datetime.now(),
+                              historyText="Deleted the productionorder " +request.data['process_order_number'])
+        historySave.save()
+        return Response(200)
+        return Response(200)
+#----------------------------------------------------------------
+class PoPropertyView(APIView):
+    def get(self, request):
+        detailsObj = ProductionOrder.objects.all().order_by('-id')
+        serializeObj = ProductionOrderPropertySerializer(detailsObj, many = True)
+        return Response(serializeObj.data)
+
+   
+    def post(self, request):
+        serializeObj = ProductionOrderPropertySerializer(data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+            
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class updatePoProperty(APIView):
+    def put(self, request, pk):
+        try:
+            detailObj = ProductionOrder.objects.get(pk=pk)
+        except:
+            return Response("Not found in database")
+
+        serializeObj = ProductionOrderPropertySerializer(detailObj, data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+            historysave=History(modelName='productionorder',
+                                savedID=pk,
+                                operationDone='update',
+                                doneByUser=request.data['loggedInUsername'],
+                                doneByUserRole=request.data['loggedInUserrole'],
+                                doneDateTime=datetime.datetime.now(),
+                                historyText="Updated the property of productionorder"+"\t" +detailObj.process_order_number+" by"+"\t" +request.data['loggedInUsername'])
+
+            historysave.save()
+            return Response(request.data['loggedInUsername'])
+            # return Response(200)
+        return Response(serializeObj.errors)
+
+class  PoPropertyindividual(APIView):
+    def get(self, request, id):
+        detailsObj =ProductionOrder.objects.all().filter(id=id)
+        serializeObj = ProductionOrderPropertySerializer(detailsObj, many=True)
+        return Response(serializeObj.data) 

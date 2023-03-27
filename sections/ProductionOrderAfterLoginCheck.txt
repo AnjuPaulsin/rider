@@ -1,0 +1,116 @@
+import React, { useEffect, useState } from 'react';
+
+import Sidebar from '../../Common/Sidebar';
+import Header from '../../Common/Header';
+import Footer from '../../Common/Footer';
+import axios from "axios";
+import ProductionOrderDataGrid from './ProductionOrderDataGrid';
+// import { Alert } from 'react-bootstrap';
+import Loading from '../../Common/Loading';
+import NotAuthorizedSection from '../../Common/NotAuthorizedSection';
+
+const ProductionOrderAfterLoginCheck = () => {
+   
+
+
+    const [selectedDIV_state, setSelectedDIV_state] = useState(<Loading/>);
+
+   function checkAuthorization() {
+    axios
+    .get("http://localhost:8000/accounts/userrolePermissionsRead")
+    .then((res) => {
+      var authorized = false;
+      // alert("haiii")
+      // alert(res.data.length)
+      // alert(res.data[0].admin['CREATE']);
+      
+      //alert(res.data[0]['activity_name']);
+      
+
+      res.data.forEach(element => {
+        if(element['activity_name'] === 'productionorder') {
+          if(window.localStorage.getItem('loggedInUserrole') === "admin") {
+            //alert(element.admin['DELETE']);
+            if(element.admin['DELETE']==="Checked" && element.admin['UPDATE']==="Checked") {
+           element.admin['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.admin['DELETE']==="Checked" && element.admin['UPDATE']==="Unchecked") {
+           element.admin['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.admin['DELETE']==="Unchecked" && element.admin['UPDATE']==="Checked") {
+             element.admin['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.admin['DELETE']==="Unchecked" && element.admin['UPDATE']==="Unchecked") {
+               element.admin['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+          }
+          else if(window.localStorage.getItem('loggedInUserrole') === "operator") {
+            if(element.operator['DELETE']==="Checked" && element.operator['UPDATE']==="Checked") {
+              element.operator['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.operator['DELETE']==="Checked" && element.operator['UPDATE']==="Unchecked") {
+             element.operator['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.operator['DELETE']==="Unchecked" && element.operator['UPDATE']==="Checked") {
+             element.operator['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.operator['DELETE']==="Unchecked" && element.operator['UPDATE']==="Unchecked") {
+               element.operator['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+          }
+          else if(window.localStorage.getItem('loggedInUserrole') === "supervisor") {
+            if(element.supervisor['DELETE']==="Checked" && element.supervisor['UPDATE']==="Checked") {
+             element.supervisor['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.supervisor['DELETE']==="Checked" && element.supervisor['UPDATE']==="Unchecked") {
+              element.supervisor['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "enabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.supervisor['DELETE']==="Unchecked" && element.supervisor['UPDATE']==="Checked") {
+             element.supervisor['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "enabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.supervisor['DELETE']==="Unchecked" && element.supervisor['UPDATE']==="Unchecked") {
+             element.supervisor['READ']==="Checked" ? setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus = "disabled" editButtonStatus = "disabled"/>) :setSelectedDIV_state(<NotAuthorizedSection/>);
+            }        
+          }
+          else if(window.localStorage.getItem('loggedInUserrole') === "masterdata") {
+            if(element.masterdata['DELETE']==="Checked" && element.masterdata['UPDATE']==="Checked"){
+               element.masterdata['READ']==="Checked"?setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus="enabled" editButtonStatus="enabled"/>):setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.masterdata['DELETE']==='Checked' && element.masterdata['UPDATE']==="Unchecked"){
+            element.masterdata['READ']==="Checked"?setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus="enabled" editButtonStatus="disabled"/>):setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+            else if(element.masterdata['DELETE']==='Unchecked' && element.masterdata['UPDATE']==="Checked"){
+             element.masterdata['READ']==='Checked'?setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus="disabled" editButtonStatus="enabled"/>):setSelectedDIV_state(<NotAuthorizedSection/>)
+            }
+            else if(element.masterdata['DELETE']==='Unchecked' && element.masterdata['UPDATE']==='Unchecked'){
+              element.masterdata['READ']==='Checked'?setSelectedDIV_state(<ProductionOrderDataGrid deleteButtonStatus="disabled" editButtonStatus="disabled"/>):setSelectedDIV_state(<NotAuthorizedSection/>);
+            }
+          }
+        }
+      });
+
+    });
+  }
+
+    useEffect(() => {     
+      checkAuthorization();
+    }, []);
+   
+    return (
+        <div id="wrapper">
+            <Sidebar pageName = "productionorder"/>
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
+                    <Header></Header>  
+                    
+                    {selectedDIV_state}
+                </div>
+                
+                <Footer></Footer>
+
+            </div>
+    </div>
+  )
+}
+
+export default ProductionOrderAfterLoginCheck;

@@ -1,0 +1,24 @@
+import React, { useEffect, useState } from 'react';
+
+import ProductionOrderPropertyAfterLoginCheck from './sections/ProductionOrderPropertyAfterLoginCheck';
+import Loading from '../Common/Loading';
+import { useNavigate } from "react-router";
+const ProductionOrderProperty=()=>
+{
+    const[selectedDIV,setSelectedDIV]=useState(<Loading/>)
+    const Navigate=useNavigate();
+    useEffect(()=>{
+        if(window.localStorage.getItem('loggedInUsername')!=null){
+            setSelectedDIV(<ProductionOrderPropertyAfterLoginCheck/>);
+        }
+        else{
+            Navigate("/")
+        }
+    },[]);
+    return(
+        <>
+        {selectedDIV}
+        </>
+    )
+}
+export default ProductionOrderProperty;
