@@ -1,0 +1,147 @@
+import React, { useState, useEffect } from "react";
+import { json, useNavigate } from "react-router";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+import { flushSync } from 'react-dom';
+
+const ProductMarketEdit = () => {
+
+    const [marketSelectDIV, setMarketSelectDIV] = useState();
+
+    const [marketArrayNames, setMarketArrayNames] = useState([]);
+    const [marketArrayCheckedStatus, setMarketArrayCheckedStatus] = useState([]);
+
+    const {uniqueID}=useParams();
+    var loggedInUsername=window.localStorage.getItem('loggedInUsername')
+    var loggedInUserrole=window.localStorage.getItem('loggedInUserrole')
+
+    let marketArrayCheckedStatusTemp = [];
+
+    const navigate = useNavigate();
+    const navigateToCreatePage = () => {
+        navigate("/productmarket/new");
+      };
+      const showMarkets = () => {
+        navigate("/market/marketdatagrid");
+      };
+function checkedorUncheckedFunction(e,value){
+    marketArrayCheckedStatus.map((element,index)=>{
+        if(index==value){
+            marketArrayCheckedStatusTemp[index]=e.target.checked;
+
+        }
+        else{
+            marketArrayCheckedStatusTemp[index]=element;
+        }
+    });
+    setMarketArrayCheckedStatus(marketArrayCheckedStatusTemp);
+
+}
+function arrangeCheckboxes(){
+    let itemList=marketArrayCheckedStatus.map((element,index)=>{
+        return <div className="col-3 p-3"><input type="checkbox" checked={marketArrayCheckedStatus[index]} onChange={e=>checkedorUncheckedFunction(e,index)}/>&nbsp;&nbsp;{marketArrayNames[index]}</div>
+    })
+    setMarketSelectDIV(itemList);
+}
+function getData(){
+    axios.get("http://127.0.0.1:8000/master/market/")
+    .then((res)=>{
+        // alert(res.data[1].market_name);
+        res.data.map((element)=>{
+            marketArrayNames.push(element.market_name);
+            marketArrayCheckedStatusTemp.push(false);
+
+        });
+        axios.get("http://127.0.0.1:8000/master/productmarket/"+uniqueID+"/")
+        .then((res2)=>
+        {
+            // alert(res2.data[0].markets);
+            var parsedJson=JSON.parse(res2.data[0].markets);
+            res.data.map((element,index)=>{
+                parsedJson.map((element2)=>{
+                    if(element2.market_name===element.market_name){
+                            // alert(element2.market_name)
+                        if(element2.checkedStatus==true)
+                        {
+                            marketArrayCheckedStatusTemp[index]=true;
+                        }
+                    }
+                });
+                setMarketArrayCheckedStatus(marketArrayCheckedStatusTemp)
+
+            });
+
+        
+
+        });
+
+    });
+}
+ const handleSubmit=(e)=>{
+    e.preventDefault();
+    let marketArrayTemp=[];
+    marketArrayNames.map((element,index)=>{
+        marketArrayTemp.push({
+            market_name:element,
+            checkedStatus:marketArrayCheckedStatus[index]
+
+        });
+    });
+
+    var marketJson=JSON.stringify(marketArrayTemp);
+    // alert(marketJson)
+    axios
+    .put(`http://127.0.0.1:8000/master/productmarket/update/${uniqueID}`,
+    {
+        "markets":marketJson,
+        "loggedInUsername":loggedInUsername,
+        "loggedInUserrole":loggedInUserrole
+    } )
+    .then(()=>{
+        navigate('/product')
+    })
+ }
+ useEffect(()=>{
+    getData();
+
+ },[])
+ useEffect(()=>{
+    arrangeCheckboxes();
+ },[marketArrayCheckedStatus])
+  return (
+    <>
+        <div class="container-fluid">
+            <div class="card shadow mb-4"> 
+                <div class="card-header py-3">
+                    <div className='row'>
+                        <div className='col-10'>
+                            <h5 class="m-0 font-weight-bold text-primary">Add Product Markets</h5>
+                        </div>
+                    </div>                                  
+                </div>
+                <div class="card-body pb-1">
+              <button className='btn btn-primary m-1' onClick={navigateToCreatePage}>Create ProductMarket</button>&nbsp;&nbsp;
+              <button className='btn btn-primary m-1' onClick={showMarkets}>Show All ProductMarkets</button>                      
+                </div>
+                <div class="card-body">  
+                    <div class="row">
+                        {marketSelectDIV}
+                    </div>
+
+                    <br></br>
+
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                    >
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </>
+  )
+}
+
+export default ProductMarketEdit
