@@ -1,0 +1,158 @@
+
+
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { Link, useParams } from "react-router-dom";
+
+
+const  ProductionOrderIdentifierEdit= () => {
+ 
+    const [id, setId] = useState(0);
+    const [identifier1,setIdentifier1]= useState("");
+    const [identifiervalue,setIdentifiervalue]=useState("")
+ 
+
+
+
+    const navigate = useNavigate();
+    const {operation}=useParams();
+    const {uniqueID}=useParams();
+    var loggedInUsername=window.localStorage.getItem('loggedInUsername')
+    var loggedInUserrole=window.localStorage.getItem('loggedInUserrole')
+
+    function getProductionOrderIdentifierEditRequestData() {
+        //var productionOrderEditID = window.localStorage.getItem("productionOrderEditID");
+        //alert(uniqueID);
+    
+        axios
+        .get("http://127.0.0.1:8000/master/poidentifier/"+uniqueID,
+          
+        )
+        .then((res) => {
+            var jsonObject = JSON.parse(res.data[0].identifier);
+    
+            setId(res.data[0].id);
+            setIdentifier1(jsonObject.identifier1Key);
+            setIdentifiervalue(jsonObject.identifiervalue);
+     
+      
+        });
+      }
+      useEffect(() => {
+        
+        getProductionOrderIdentifierEditRequestData();       
+      }, []);
+
+      var identifierWidget =           
+       <select value ={identifier1} class="form-control" aria-label="Default select example" onChange={(e) => setIdentifier1(e.target.value)}> 
+      <option value="">Select</option> 
+      <option value="AT-PZN">AT-PZN</option>
+      <option value=" BE_ABP_CODE ">BE_ABP_CODE</option> 
+      <option value="BR_An_visa_Registration_Number">BR_An_visa_Registration_Number</option>
+      <option value="CA-DIN">CA-DIN</option>
+      <option value="CH-Swissmedic">CH-Swissmedic</option>
+      <option value="CN_Subtype_Code">CN_Subtype_Code</option> 
+      <option value="DE-PPN">DE-PPN</option>
+      <option value="DE-PZN">DE-PZN</option>
+      <option value="Dosage">Dosage</option>
+      <option value="EAN_13">EAN_13</option>
+      <option value="Form_type">Form_type</option>
+      <option value=" Generic_Name">Generic_Name</option>
+      <option value="GR_EOF_CODE">GR_EOF_CODE</option>
+      <option value="GS1_company_prefix">GS1_company_prefix</option>
+      <option value="HR_Croatia_National_Code">HR_Croatia_National_Code</option>
+      <option value="IN_Product_Code">IN_Product_Code</option>
+      <option value="Internal_Material_Number">Internal Material Number</option>
+      <option value="IT_Bollino">IT_Bollino</option>
+      <option value="KR_KFDA_Code">KR_KFDA_Code</option>
+      <option value="License_Number">License_Number</option>
+      <option value="Manufacturing_Date">Manufacturing_Date</option>
+      <option value="NL_KLMP">NL_KLMP</option>
+      <option value="NRD_Nordic_VNR_Drug_Code">NRD_Nordic_VNR_Drug_Code</option>
+      <option value="Packet_type">Packet_type</option>
+      <option value="Revision_Number">Revision_Number</option>
+      <option value="PT_Aim_Number">PT_Aim_Number</option>
+    </select>
+  var identifiertxt1=<input type="text" onChange={(e) => setIdentifiervalue(e.target.value)} value={identifiervalue} className="form-control" ></input>
+    const handleSubmit=(e)=>
+    {
+        e.preventDefault();
+     
+        axios
+        .put(`http://127.0.0.1:8000/master/poidentifier/update/`+uniqueID,
+        {
+            "identifier":JSON.stringify({
+                identifier1Key:identifier1,
+       
+    
+                identifiervalue:identifiervalue,
+             
+    
+              }),
+                "loggedInUsername":loggedInUsername,
+                "loggedInUserrole":loggedInUserrole
+        }
+        )
+        .then(()=>{
+            navigate("/productionorder");
+        });
+    }
+
+    return (
+        <>
+            <div class="container-fluid">
+                <div class="card shadow mb-4"> 
+                    <div class="card-header py-3">
+                    <div className='row'>
+                        <div className='col-10'>
+                            <h5 class="m-0 font-weight-bold text-primary">Add Provider Settings</h5>
+                        </div>
+                    </div>                                  
+                    </div>
+        
+                    <div class="card-body">  
+                        <table class="table table-borderless productionOrderReportSearchTable" id="productionOrderReportSearchTableID">
+                            <tbody>
+                                <tr>
+                                    <div className="row">
+                                        <div className="col-4">
+                                            <td class="productionOrderReportSearchTD">Identifier</td>
+                                        </div>
+                                        <div className="col-4">
+                                            <td class="productionOrderReportSearchTD">{identifierWidget}</td>
+                                        </div>
+                                        <div className="col-4">
+                                            <td class="productionOrderReportSearchTD">{identifiertxt1}</td>
+                                        </div>
+                                    </div>
+                                </tr>
+                             
+                                <br></br>
+                                <tr>
+                                    <td class="productionOrderReportSearchTD">
+                                    <button
+                                        type="submit"
+
+                                        className="btn btn-primary"
+                                        onClick={handleSubmit}
+                                    >
+                                        Submit
+                                    </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default ProductionOrderIdentifierEdit
+
+
+
+
+

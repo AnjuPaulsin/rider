@@ -12,7 +12,7 @@ const  ProductionOrderPropertyEdit= () => {
     const [usage,setUsage]= useState("");
     const [remark,setRemark]= useState("");
     const [productimage,setProductImage]= useState("");
-   const [scheduled ,setScheduled ] = useState("2017-5-2");
+    const [scheduled ,setScheduled ] = useState("2017-5-2");
     const [productionOrderEditID, setProductionOrderEditID] = useState();
 
 
@@ -55,38 +55,39 @@ const  ProductionOrderPropertyEdit= () => {
         getProductOrderPropertyEditRequestData();       
       }, []);
 
-      var genericnameWidget =<input
+    var genericnameWidget =<input
       type="text"
       className="form-control"
       value={genericname}
       onChange={(e) => setGenericname(e.target.value)}
     />    
-     var compositionWidget =<input
+    var compositionWidget =<input
       type="text"
       value={composition}
       className="form-control"
       onChange={(e) => setComposition(e.target.value)}
     />
     var scheduledWidget =<input
-    type="date"
-    value={scheduled}
-    className="form-control"
-    onChange={(e) => setScheduled(e.target.value)}
+        type="date"
+        value={scheduled}
+        className="form-control"
+        onChange={(e) => setScheduled(e.target.value)}
     />
     var usageWidget =<input
       type="text"
       value={usage}
       className="form-control"
       onChange={(e) => setUsage(e.target.value)}
-  />
-  var remarkWidget = <input
+    />
+    var remarkWidget = <input
       type="text"
       value={remark}
       className="form-control"
       onChange={(e) => setRemark(e.target.value)}
     />
-  var productimageWidget =  <input
-      type="text"
+    var productimageWidget =  <input
+      type="file"
+    
       value={productimage}
       className="form-control"
       onChange={(e) => setProductImage(e.target.value)}
@@ -105,7 +106,7 @@ const  ProductionOrderPropertyEdit= () => {
             "scheduled":scheduled,
             "usage": usage, 
             "remark":remark,
-            "product_image": productimage, 
+            "product_image":productimage, 
           
             "loggedInUsername":loggedInUsername,
             "loggedInUserrole":loggedInUserrole
@@ -172,7 +173,8 @@ const  ProductionOrderPropertyEdit= () => {
                                     <td class="productionOrderReportSearchTD">
                                     <button
                                         type="submit"
-                                        className="btn btn-success"
+
+                                        className="btn btn-primary"
                                         onClick={handleSubmit}
                                     >
                                         Submit

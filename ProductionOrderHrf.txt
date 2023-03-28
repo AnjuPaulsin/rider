@@ -1,0 +1,25 @@
+import React, { useEffect, useState } from 'react';
+
+import ProductionOrderHrfAfterLoginCheck from './sections/ProductionOrderHrfAfterLoginCheck';
+import Loading from '../Common/Loading';
+import { useNavigate } from "react-router";
+const ProductionOrderHrf=()=>
+{
+    const[selectedDIV,setSelectedDIV]=useState(<Loading/>)
+    const Navigate=useNavigate();
+    useEffect(()=>{
+        if(window.localStorage.getItem('loggedInUsername')!=null){
+            setSelectedDIV(<ProductionOrderHrfAfterLoginCheck/>);
+        }
+        else{
+            Navigate("/")
+        }
+    },[]);
+    return(
+        <>
+        {selectedDIV}
+        </>
+    )
+}
+export default ProductionOrderHrf;
+

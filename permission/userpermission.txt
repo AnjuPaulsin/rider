@@ -929,12 +929,14 @@ app.js
 import ProductionOrder from './Components/ProductionOrder/ProductionOrder';
 import ProductionOrderCreate from './Components/ProductionOrder/ProductionOrderCreate';
 import ProductionOrderProperty from './Components/ProductionOrder/ProductionOrderProperty';
-
+import ProductionOrderHrf from './Components/ProductionOrder/ProductionOrderHrf';
+import ProductionOrderIdentifier from './Components/ProductionOrder/ProductionOrderIdentifier';
 -------------------
 <Route path="/productionorder" element={<ProductionOrder/>}></Route>
- <Route path="/productionorder/:operation/:uniqueID" element={<ProductionOrderCreate/>}></Route>
-  <Route path="/productionorder/productionorderproperty/:uniqueID" element={<ProductionOrderProperty/>}></Route>
-
+          <Route path="/productionorder/:operation/:uniqueID" element={<ProductionOrderCreate/>}></Route>
+          <Route path="/productionorder/productionorderproperty/:uniqueID" element={<ProductionOrderProperty/>}></Route>
+          <Route path="/productionorder/productionorderhrf/:uniqueID" element={<ProductionOrderHrf />} />
+          <Route path="/productionorder/productionorderidentifier/:uniqueID" element={<ProductionOrderIdentifier />} />
 
 
 
@@ -1153,8 +1155,7 @@ class UserrolePermissionsRead(APIView):
 
 model
 -------
-  
-  class ProductionOrder(models.Model):
+class ProductionOrder(models.Model):
     id = models.AutoField(primary_key=True)
     process_order_number = models.CharField(max_length= 20, unique= True)
     created_by = models.CharField(max_length =100)
@@ -1193,13 +1194,11 @@ model
     model_name = models.CharField(max_length=50,null=True,blank=True)
     stock_quantity= models.CharField(max_length=50,null=True,blank=True)
     shipped= models.CharField(max_length=50,null=True,blank=True)
-
+    
+    hrf= models.JSONField(max_length=200,null=True,blank=True)
+    identifier= models.JSONField(max_length=200,null=True,blank=True)
     def __str__(self):
         return self.manufacturing_location
-   
-
-    def __str__(self):
-        return self.system_name or ''
 ---------------------------
 serializer
 ---------
@@ -1215,10 +1214,22 @@ class ProductionOrderPropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductionOrder
         fields =['id','generic_name','composition','scheduled','usage','remark','product_Image']
+        # fields="__all__",,,,'wholesalers'
+class ProductionOrderHrfSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductionOrder
+        fields =['id','hrf']
+class ProductionOrderIdentifierSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductionOrder
+        fields =['id','identifier']
+
 ----------------------------------------------------------
 urls
 ---------
-    path('productionorder/', views.ProductionOrderView.as_view()),
+   path('productionorder/', views.ProductionOrderView.as_view()),
     path('productionorder/<int:id>/', views.ProductionOrderViewIndividual.as_view()),
     path('productionorder/update/<int:pk>', views.updateProductionOrder.as_view()),
     path('productionorder/delete/<int:pk>', views.deleteProductionOrder.as_view()),
@@ -1228,6 +1239,16 @@ urls
     path('poproperty/', views.PoPropertyView.as_view()),
     path('poproperty/<int:id>',views.PoPropertyindividual.as_view()),
     path('poproperty/update/<int:pk>', views.updatePoProperty.as_view()),
+    #-----------------------------------------------------------------------------------
+    path('productionorderhrf/', views.ProductionOrderHrfView.as_view()),
+    path('productionorderhrf/<int:id>/',views.ProductionOrderHrfindividual.as_view()),
+    path('productionorderhrf/update/<int:pk>',views.updateProductionOrderHrf.as_view()),
+
+    #------------------------------------------------------------------------------------
+    path('poidentifier/', views.ProductionOrderIdentifierView.as_view()),
+    path('poidentifier/<int:id>/',views.ProductionOrderIdentifierindividual.as_view()),
+    path('poidentifier/update/<int:pk>',views.updateProductionOrderIdentifier.as_view()),
+
 views
 -----------------
 
@@ -1348,4 +1369,95 @@ class  PoPropertyindividual(APIView):
     def get(self, request, id):
         detailsObj =ProductionOrder.objects.all().filter(id=id)
         serializeObj = ProductionOrderPropertySerializer(detailsObj, many=True)
+        return Response(serializeObj.data) 
+
+#-----------------------------------------------------------------
+class ProductionOrderHrfView(APIView):
+    def get(self, request):
+        detailsObj = ProductionOrder.objects.all().order_by('-id')
+        serializeObj = ProductionOrderHrfSerializer(detailsObj, many = True)
+        return Response(serializeObj.data)
+
+   
+    def post(self, request):
+        serializeObj =ProductionOrderHrfSerializer(data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+            
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class updateProductionOrderHrf(APIView):
+    def put(self, request, pk):
+        try:
+            detailObj = ProductionOrder.objects.get(pk=pk)
+        except:
+            return Response("Not found in database")
+
+        serializeObj = ProductionOrderHrfSerializer(detailObj, data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+       
+            historysave=History(modelName='productionorder',
+                                savedID=pk,
+                                operationDone='update',
+                                doneByUser=request.data['loggedInUsername'],
+                                doneByUserRole=request.data['loggedInUserrole'],
+                                doneDateTime=datetime.datetime.now(),
+                                historyText="updated the HRF of productionorder " +detailObj.process_order_number+" by"+"\t" +request.data['loggedInUsername'])
+
+            historysave.save()
+            return Response(request.data['loggedInUsername'])
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class  ProductionOrderHrfindividual(APIView):
+    def get(self, request, id):
+        detailsObj =ProductionOrder.objects.all().filter(id=id)
+        serializeObj = ProductionOrderHrfSerializer(detailsObj, many=True)
+        return Response(serializeObj.data) 
+#--------------------------------------------------------------------------------
+class ProductionOrderIdentifierView(APIView):
+    def get(self, request):
+        detailsObj = ProductionOrder.objects.all().order_by('-id')
+        serializeObj = ProductionOrderIdentifierSerializer(detailsObj, many = True)
+        return Response(serializeObj.data)
+
+   
+    def post(self, request):
+        serializeObj =ProductionOrderIdentifierSerializer(data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+            
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class updateProductionOrderIdentifier(APIView):
+    def put(self, request, pk):
+        try:
+            detailObj = ProductionOrder.objects.get(pk=pk)
+        except:
+            return Response("Not found in database")
+
+        serializeObj = ProductionOrderIdentifierSerializer(detailObj, data=request.data)
+        if serializeObj.is_valid():
+            serializeObj.save()
+       
+            historysave=History(modelName='productionorder',
+                                savedID=pk,
+                                operationDone='update',
+                                doneByUser=request.data['loggedInUsername'],
+                                doneByUserRole=request.data['loggedInUserrole'],
+                                doneDateTime=datetime.datetime.now(),
+                                historyText="updated the provider settings of productionorder " +detailObj.process_order_number+" by"+"\t" +request.data['loggedInUsername'])
+
+            historysave.save()
+            return Response(request.data['loggedInUsername'])
+            return Response(200)
+        return Response(serializeObj.errors)
+
+class  ProductionOrderIdentifierindividual(APIView):
+    def get(self, request, id):
+        detailsObj =ProductionOrder.objects.all().filter(id=id)
+        serializeObj = ProductionOrderIdentifierSerializer(detailsObj, many=True)
         return Response(serializeObj.data) 
